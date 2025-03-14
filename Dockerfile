@@ -31,10 +31,10 @@ RUN mkdir -p /home/gridftp/globus_config/.globus && \
 # Copy the script into the container
 COPY globus-connect-personal.sh /home/gridftp/globus-connect-personal.sh
 COPY initialization.sh /home/gridftp/initialization.sh
-COPY entrypoint.sh ./entrypoint.sh
+COPY entrypoint.sh /home/gridftp/entrypoint.sh
 
 # Make the script executable
-RUN chmod +x /home/gridftp/initialization.sh ./entrypoint.sh /home/gridftp/globus-connect-personal.sh
+RUN chmod +x /home/gridftp/initialization.sh /home/gridftp/entrypoint.sh /home/gridftp/globus-connect-personal.sh
 # globus-connect-server-setup script needs these
 ENV HOME=/root
 ENV TERM=xterm
