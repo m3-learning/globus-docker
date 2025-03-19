@@ -1,6 +1,8 @@
 ### Globus container
 - Build globus container
 - docker build -t globus_container -f Dockerfile .
+
+{Below Command is for windows CLI}
 ```bash
 docker run -e DataPath="E:/globus_data/data" -e ConfigPath="E:/globus_data/config" -v "E:/globus_data/config:/home/gridftp/globus_config" -v "E:/globus_data/data:/home/gridftp/data" -it globus
 ```
