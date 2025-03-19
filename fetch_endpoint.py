@@ -13,7 +13,9 @@ def fetch_endpoint():
     print(f"Fetched GLOBUS_ENDPOINT_ID: {endpoint_id}")
     # You can use the endpoint_id here or set it as an environment variable
     os.environ["GLOBUS_ENDPOINT_ID"] = endpoint_id
-
+    # Save the endpoint ID to a file
+    with open('endpoint_id.txt', 'w') as f:
+        f.write(endpoint_id)
 if __name__ == "__main__":
     fetch_endpoint()
 
