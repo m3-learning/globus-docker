@@ -1,5 +1,3 @@
-
-
 FROM rockylinux:9
 
 VOLUME /home/gridftp/globus_config
@@ -7,7 +5,7 @@ VOLUME /home/gridftp/data
 
 # Install necessary packages
 RUN yum -y update && \
-    yum -y install wget rsync openssh-clients python pip && \
+    yum -y install wget rsync openssh-clients python pip dos2unix && \
     yum -y install epel-release && \
     yum -y update && \
     dnf -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm && \
@@ -17,7 +15,7 @@ RUN yum -y update && \
 RUN cd /root && \
     wget https://downloads.globus.org/globus-connect-personal/linux/stable/globusconnectpersonal-latest.tgz && \
     tar xzvf /root/globusconnectpersonal-latest.tgz -C /home/gridftp && \
-    chown -R gridftp.gridftp /home/gridftp/globus*
+    chown -R gridftp.gridftp /home/gridftp/globus* 
 
 # Create directories and adjust permissions
 RUN mkdir -p /home/gridftp/globus_config/.globus && \
@@ -35,6 +33,8 @@ COPY entrypoint.sh /home/gridftp/entrypoint.sh
 
 # Make the script executable
 RUN chmod +x /home/gridftp/initialization.sh /home/gridftp/entrypoint.sh /home/gridftp/globus-connect-personal.sh
+# Convert Windows line endings to Unix
+RUN dos2unix /home/gridftp/initialization.sh /home/gridftp/entrypoint.sh /home/gridftp/globus-connect-personal.sh
 # globus-connect-server-setup script needs these
 ENV HOME=/root
 ENV TERM=xterm
@@ -46,5 +46,5 @@ ENV GLOBUS_CONFIG_PATH=/home/gridftp/globus_config
 ENV GLOBUS_OPTIONAL_MODE=false  
 
 CMD ["chmod -R 777 /shared-data"]
-# Set entrypoint to run on startup
+# Set entrypoint to run on startup 
 ENTRYPOINT ["/home/gridftp/entrypoint.sh"]
