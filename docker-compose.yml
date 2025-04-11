@@ -9,7 +9,7 @@ services:
     environment:
       - DataPath=${DataPath} # Ensure DataPath is set in the environment or .env file
       - ConfigPath=${ConfigPath} # Ensure ConfigPath is set in the environment or .env file
-      - START_GLOBUS=true
+      - START_GLOBUS=false
     volumes:
       - "${ConfigPath}:/home/gridftp/globus_config" # Map host config path to container
       - shared-data:/shared-data # Shared volume between services
@@ -20,6 +20,7 @@ services:
       - "2811:2811" # Port mappings for Globus Connect
       - "7512:7512"
       - "7513:7513"
+      - "5000:5000"
     restart: unless-stopped # Automatically restart unless stopped manually
 
 volumes:

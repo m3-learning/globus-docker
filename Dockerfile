@@ -5,13 +5,14 @@ VOLUME /home/gridftp/data
 
 # Install necessary packages
 RUN yum -y update && \
-    yum -y install wget rsync openssh-clients python pip dos2unix && \
+    yum -y install wget rsync openssh-clients python pip dos2unix  && \
     yum -y install epel-release && \
     yum -y update && \
     dnf -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm && \
     pip3 install --upgrade globus-cli && \
     adduser gridftp
 
+    
 RUN cd /root && \
     wget https://downloads.globus.org/globus-connect-personal/linux/stable/globusconnectpersonal-latest.tgz && \
     tar xzvf /root/globusconnectpersonal-latest.tgz -C /home/gridftp && \
@@ -30,7 +31,12 @@ RUN mkdir -p /home/gridftp/globus_config/.globus && \
 COPY globus-connect-personal.sh /home/gridftp/globus-connect-personal.sh
 COPY initialization.sh /home/gridftp/initialization.sh
 COPY entrypoint.sh /home/gridftp/entrypoint.sh
+COPY run_with_ngrok.py /home/gridftp/run_with_ngrok.py
+COPY app.py /home/gridftp/app.py
+COPY .env /home/gridftp/.env
+COPY requirements.txt /home/gridftp/requirements.txt
 
+RUN pip3 install -r /home/gridftp/requirements.txt
 # Make the script executable
 RUN chmod +x /home/gridftp/initialization.sh /home/gridftp/entrypoint.sh /home/gridftp/globus-connect-personal.sh
 # Convert Windows line endings to Unix
